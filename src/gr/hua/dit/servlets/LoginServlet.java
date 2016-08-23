@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import gr.hua.dit.beans.User;
 
-@WebServlet("/LoginServlet")
+@WebServlet(name = "Login", urlPatterns = { "/Login" })
 public class LoginServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 8345605719292191551L;
@@ -57,7 +57,7 @@ public class LoginServlet extends HttpServlet {
 							rs.getInt("id"));
 					HttpSession session = request.getSession();
 					session.setAttribute("User", user);
-					response.sendRedirect("home.jsp");
+					response.sendRedirect("protected/home.jsp");
 				} else {
 					RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.html");
 					PrintWriter out = response.getWriter();

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebServlet("/LogoutServlet")
+@WebServlet(name = "Logout", urlPatterns = { "/Logout" })
 public class LogoutServlet extends HttpServlet {
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
