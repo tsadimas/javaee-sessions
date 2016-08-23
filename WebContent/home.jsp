@@ -19,7 +19,7 @@
 	<strong>Your Country</strong>:
 	<%=user.getCountry()%><br>
 	<br>
-	<form action="Logout" method="post">
+	<form action="LogoutServlet" method="post">
 		<input type="submit" value="Logout">
 	</form>
 </body>

@@ -16,14 +16,14 @@
 	</session-config>
 	<context-param>
 		<param-name>dbUser</param-name>
-		<param-value>XXXXX</param-value>
+		<param-value>XXX</param-value>
 	</context-param>
 	<context-param>
 		<param-name>dbPassword</param-name>
-		<param-value>XXXXX</param-value>
+		<param-value>XXX</param-value>
 	</context-param>
 	<context-param>
 		<param-name>dbURL</param-name>
-		<param-value>jdbc:mysql://XXXXX:3306/dist_syst</param-value>
+		<param-value>jdbc:mysql://XXX:3306/XXX</param-value>
 	</context-param>
 </web-app>
