@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 
 import gr.hua.dit.beans.Contact;
 
-
 @WebServlet(name = "Contacts", urlPatterns = { "/Contacts" })
 public class ContactsServlet extends HttpServlet {
 
@@ -27,12 +26,24 @@ public class ContactsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		
 		Connection con = (Connection) getServletContext().getAttribute("DBConnection");
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = con.prepareStatement("select id, name, surname, phone, birthdate, user_id from Contacts");
+			String user_id = request.getParameter("user_id");
+
+			if (user_id != null) {
+				try {
+					int id = Integer.parseInt(user_id);
+					ps = con.prepareStatement(
+							"select id, name, surname, phone, birthdate, user_id from Contacts where user_id = ?");
+					ps.setString(1, String.valueOf(id));
+				} catch (NumberFormatException e) {
+					System.out.println("Wrong number");
+				}
+			} else {
+				ps = con.prepareStatement("select id, name, surname, phone, birthdate, user_id from Contacts");
+			}
 			rs = ps.executeQuery();
 
 			ArrayList<Contact> Contacts = new ArrayList<Contact>();
