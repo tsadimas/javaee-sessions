@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 @WebFilter(
 filterName = "AuthenticationFilter",
-urlPatterns = { "/protected/*" }
+urlPatterns = { "/protected/*", "/Contacts" }
 )
 
 public class AuthenticationFilter implements Filter {
