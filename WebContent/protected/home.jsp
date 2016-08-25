@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -7,14 +8,15 @@
 <title>Home Page</title>
 </head>
 <body>
+<c:set var="currentUser" value="${User}" />
 
-	<h3>Hi ${User.name}</h3>
-	<strong>Your Email</strong>: ${User.email}
+	<h3>Hi ${currentUser.name}</h3>
+	<strong>Your Email</strong>: ${currentUser.email}
 	<br>
-	<strong>Your Country</strong>: ${User.country}
+	<strong>Your Country</strong>: ${currentUser.country}
 	<br>
 	<br>
-	<form action="${pageContext.request.contextPath}/Logout" method="post">
+	<form action="<c:url value='/Logout' />" method="post">
 		<input type="submit" value="Logout">
 	</form>
 </body>
