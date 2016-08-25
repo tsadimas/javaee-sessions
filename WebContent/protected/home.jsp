@@ -8,7 +8,7 @@
 <title>Home Page</title>
 </head>
 <body>
-<c:set var="currentUser" value="${User}" />
+<c:set var="currentUser" value="${sessionScope['User']}" />
 
 	<h3>Hi ${currentUser.name}</h3>
 	<strong>Your Email</strong>: ${currentUser.email}
@@ -19,5 +19,6 @@
 	<form action="<c:url value='/Logout' />" method="post">
 		<input type="submit" value="Logout">
 	</form>
+	<a href="<c:url value="/Contacts"/>"> All Contacts</a>
 </body>
 </html>
