@@ -13,7 +13,10 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "Logout", urlPatterns = { "/Logout" })
 public class LogoutServlet extends HttpServlet {
-       
+    
+	 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 this.doPost(request, response);
+	 }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	response.setContentType("text/html");
     	Cookie[] cookies = request.getCookies();

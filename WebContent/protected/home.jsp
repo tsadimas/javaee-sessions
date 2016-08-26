@@ -15,15 +15,9 @@
 	<br>
 	<strong>Your Country</strong>: ${currentUser.country}
 	<br>
+	<strong>Your Id</strong>: ${currentUser.id}
 	<br>
-	<form action="<c:url value='/Logout' />" method="post">
-		<input type="submit" value="Logout">
-	</form>
-	<a href="<c:url value="/Contacts"/>"> All Contacts</a>
-
-	<a href="<c:url value="/Contacts"> 
-		<c:param name="user_id" value="${currentUser.id}" />
-		</c:url>">My Contacts</a>
-
+	<br>
+	
 </body>
 </html>
