@@ -57,6 +57,7 @@ public class LoginServlet extends HttpServlet {
 							rs.getInt("id"));
 					HttpSession session = request.getSession();
 					session.setAttribute("User", user);
+					session.setAttribute("pageTitle", "Home Page");
 					response.sendRedirect("protected/home.jsp");
 				} else {
 					RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.html");

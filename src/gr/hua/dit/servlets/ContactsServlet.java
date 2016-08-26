@@ -29,6 +29,7 @@ public class ContactsServlet extends HttpServlet {
 		Connection con = (Connection) getServletContext().getAttribute("DBConnection");
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		String pageTitle="";
 		try {
 			String user_id = request.getParameter("user_id");
 
@@ -38,11 +39,13 @@ public class ContactsServlet extends HttpServlet {
 					ps = con.prepareStatement(
 							"select id, name, surname, phone, birthdate, user_id from Contacts where user_id = ?");
 					ps.setString(1, String.valueOf(id));
+					pageTitle="My Contacts Page";
 				} catch (NumberFormatException e) {
 					System.out.println("Wrong number");
 				}
 			} else {
 				ps = con.prepareStatement("select id, name, surname, phone, birthdate, user_id from Contacts");
+				pageTitle="Contacts Page";
 			}
 			rs = ps.executeQuery();
 
@@ -57,6 +60,7 @@ public class ContactsServlet extends HttpServlet {
 
 			HttpSession session = request.getSession();
 			session.setAttribute("Contacts", Contacts);
+			session.setAttribute("pageTitle", pageTitle);
 			response.sendRedirect("protected/contacts.jsp");
 
 		} catch (SQLException e) {
