@@ -1,5 +1,5 @@
 <c:set var="contact" value="${sessionScope['Contact']}" />
-<form>
+<form action="<c:url value="/Contact"><c:param name="user_id" value="${User.id}" /></c:url>" method="post">
 <label for="name" value="Name: "/>
 <input name="name" type="text" value="${contact.name}"/><br/>
 <label for="surname" value="Surname: "/>

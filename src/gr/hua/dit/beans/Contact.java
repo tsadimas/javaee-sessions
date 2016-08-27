@@ -22,6 +22,14 @@ public class Contact implements Serializable {
 		this.birthdate = birthdate;
 		this.user_id = user_id;
 	}
+	
+	public Contact(String name, String surname, int phone, Date birthdate, int user_id) {
+		this.name = name;
+		this.surname = surname;
+		this.phone = phone;
+		this.birthdate = birthdate;
+		this.user_id = user_id;
+	}
 
 	
 	public int getId() {
