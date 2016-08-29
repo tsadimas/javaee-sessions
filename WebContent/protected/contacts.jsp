@@ -1,4 +1,4 @@
-	<c:set var="contacts" value="${sessionScope['Contacts']}" />
+<c:set var="contacts" value="${sessionScope['Contacts']}" />
 	<table>
 		<thead>
 			<tr>
@@ -26,6 +26,7 @@
 		<c:param name="contact_id" value="${contact.id}" />
 		<c:param name="user_id" value="${User.id}" />
 		</c:url>">Edit</a>
+		<input type="submit" id="${contact.id}" name="deleteContact" value="Delete">
 		</c:if>
 		</td>
 				</tr>
@@ -33,5 +34,23 @@
 		</tbody>
 
 	</table>
+	<a href="<c:url value="/protected/contact.jsp"></c:url>"> Add new Contact </a>
+	<script type="text/javascript">
+	$("[name='deleteContact']").click(function () {
+		var urlCall="<c:url value="/Contact"></c:url>"
+	alert("Clicked! " + $(this).attr('id'));	
+	$.ajax({
+	    url: urlCall + '?' + $.param({"contact_id": $(this).attr('id'), "user_id": '${User.id}' }),
+	    type: 'DELETE',
+	    success: function(result){
+	         console.log(result);
+	         $(location).attr("href", "<c:url value="/Contacts"></c:url>");
+	        },
+	    error:  function(result){
+	          console.log(result);
+        },   
+	});
+	});
+	</script>
 </body>
 </html>

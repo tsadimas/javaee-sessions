@@ -22,7 +22,6 @@ import gr.hua.dit.beans.User;
 public class ContactServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 6227417619618196810L;
-		
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -33,11 +32,9 @@ public class ContactServlet extends HttpServlet {
 		String pageTitle = "";
 		String contact_id = request.getParameter("contact_id");
 		String user_id = request.getParameter("user_id");
-		
-		HttpSession session = request.getSession();
-	
 
-		
+		HttpSession session = request.getSession();
+
 		try {
 			if (contact_id != null) {
 				try {
@@ -59,14 +56,18 @@ public class ContactServlet extends HttpServlet {
 
 					Contact contact = new Contact(rs.getInt("id"), rs.getString("name"), rs.getString("surname"),
 							rs.getInt("phone"), rs.getDate("birthdate"), rs.getInt("user_id"));
-					session.setAttribute("Contact", contact);
-					session.setAttribute("pageTitle", "Contact Page");
-					response.sendRedirect("protected/contact.jsp");
+					request.setAttribute("Contact", contact);
+					request.setAttribute("pageTitle", "Contact Page");
+					request.getRequestDispatcher("protected/contact.jsp").forward(request, response);
+
 				} else {
 					IOException e = new IOException("You have not acces to change this Contact");
 					throw e;
 				}
 
+			} else {
+				request.setAttribute("pageTitle", "New Contact Page");
+				request.getRequestDispatcher("protected/contact.jsp").forward(request, response);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -96,43 +97,45 @@ public class ContactServlet extends HttpServlet {
 		Connection con = (Connection) getServletContext().getAttribute("DBConnection");
 		PreparedStatement ps = null;
 		HttpSession session = request.getSession();
-		
-
 
 		if (user_id != null) {
+
 			if (name != null && phone != null) {
+
 				try {
 					Contact contact = new Contact(name, surname, Integer.parseInt(phone), Date.valueOf(birthdate),
 							Integer.parseInt(user_id));
-					
-					if (contact_id != null) {
-					System.out.println("in update");
-					ps = con.prepareStatement("update Contacts set name=?, surname=?, phone=?, birthdate=? where id = ?");
-					ps.setString(1, String.valueOf(name));
-					ps.setString(2, String.valueOf(surname));
-					ps.setString(3, String.valueOf(phone));
-					ps.setString(4, String.valueOf(birthdate));
-					ps.setString(5, String.valueOf(contact_id));
-					System.out.println(ps);
 
-					}
-					else {
+					if ((contact_id != null) && (!contact_id.isEmpty())) {
+
+						System.out.println("in update");
+						ps = con.prepareStatement(
+								"update Contacts set name=?, surname=?, phone=?, birthdate=? where id = ? and user_id = ?");
+						ps.setString(1, String.valueOf(name));
+						ps.setString(2, String.valueOf(surname));
+						ps.setString(3, String.valueOf(phone));
+						ps.setString(4, String.valueOf(birthdate));
+						ps.setString(5, String.valueOf(contact_id));
+						ps.setString(6, String.valueOf(user_id));
+						System.out.println(ps);
+
+					} else {
 						System.out.println("in insert");
-						ps = con.prepareStatement("insert into  Contacts (name, surname, phone, birthdate, user_id) values (?, ?, ?, ?, ?)");
+						ps = con.prepareStatement(
+								"insert into  Contacts (name, surname, phone, birthdate, user_id) values (?, ?, ?, ?, ?)");
 						ps.setString(1, String.valueOf(name));
 						ps.setString(2, String.valueOf(surname));
 						ps.setString(3, String.valueOf(phone));
 						ps.setString(4, String.valueOf(birthdate));
 						ps.setString(5, String.valueOf(user_id));
 					}
-					
-					int r= ps.executeUpdate();
-					
+
+					int r = ps.executeUpdate();
+					System.out.println("update result = " + r);
+
 					if (r > 0) {
-						//session.setAttribute("message", "Update Success");
 						response.sendRedirect("Contacts");
-					}
-					else {
+					} else {
 						System.out.println("Contact not updated");
 						throw new ServletException("Contact not updated.");
 					}
@@ -143,7 +146,7 @@ public class ContactServlet extends HttpServlet {
 					throw new ServletException("DB Connection problem.");
 				} finally {
 					try {
-						
+
 						ps.close();
 					} catch (SQLException e) {
 						System.out.println("SQLException in closing PreparedStatement or ResultSet");
@@ -159,6 +162,36 @@ public class ContactServlet extends HttpServlet {
 			System.out.println("Not user id provided");
 			throw new ServletException("Not user id provided");
 		}
+
+	}
+
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String contact_id = request.getParameter("contact_id");
+		String user_id = request.getParameter("user_id");
+		Connection con = (Connection) getServletContext().getAttribute("DBConnection");
+		PreparedStatement ps = null;
+		HttpSession session = request.getSession();
+		try {
+			ps = con.prepareStatement("delete from Contacts where id = ? and user_id = ?");
+			ps.setString(1, String.valueOf(contact_id));
+			ps.setString(2, String.valueOf(user_id));
+			
+			int r = ps.executeUpdate();
+			System.out.println("result from delete " + r);
+			if (r > 0) {
+				response.setStatus(HttpServletResponse.SC_OK);
+		
+			} else {
+				System.out.println("Contact not deleted");
+				throw new ServletException("Contact not deleted.");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
 	}
 
