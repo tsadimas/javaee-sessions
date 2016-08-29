@@ -6,7 +6,7 @@
 <input name="surname" type="text" value="${contact.surname}"/><br/>
 <label for="phone">Phone:</label>
 <input name="phone" type="text" value="${contact.phone}"/><br/>
-<label for="birthdate">Birthdate:</label>
+<label for="birthdate">Birthdate (YYYY-MM-DD):</label>
 <input name="birthdate" type="text" value="${contact.birthdate}"/><br/>
 <label for="id">Id:</label>
 <input name="id" type="text" value="${contact.id}" readonly /><br/>

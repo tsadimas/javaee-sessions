@@ -2,10 +2,12 @@ package gr.hua.dit.servlets;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 
 import gr.hua.dit.beans.Contact;
 import gr.hua.dit.beans.User;
@@ -97,13 +101,36 @@ public class ContactServlet extends HttpServlet {
 		Connection con = (Connection) getServletContext().getAttribute("DBConnection");
 		PreparedStatement ps = null;
 		HttpSession session = request.getSession();
+		int phone_int;
+		Date date_valid;
+		try {
+			phone_int = Integer.parseInt(phone);
+		} catch (NumberFormatException e) {
+			System.out.println("Wrong number");
+			throw new ServletException("Wrong phone.");
+		}
+		
+		
+		try {
+        	date_valid = new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
+        	System.out.println("Birthdate " + date_valid.toString());
+    	} catch (ParseException e) {
+    		System.out.println("Birthdate e" + e.getMessage());
+        	e.printStackTrace();
+        	throw new ServletException("Wrong birthdate.");
+        	
+    	}
+
+		
+		
+		
 
 		if (user_id != null) {
 
 			if (name != null && phone != null) {
 
 				try {
-					Contact contact = new Contact(name, surname, Integer.parseInt(phone), Date.valueOf(birthdate),
+					Contact contact = new Contact(name, surname, phone_int, date_valid,
 							Integer.parseInt(user_id));
 
 					if ((contact_id != null) && (!contact_id.isEmpty())) {
@@ -140,6 +167,11 @@ public class ContactServlet extends HttpServlet {
 						throw new ServletException("Contact not updated.");
 					}
 
+				}catch (MysqlDataTruncation e) {
+						e.printStackTrace();
+						System.out.println("Data truncation");
+						throw new ServletException("Data truncation.");
+					
 				} catch (SQLException e) {
 					e.printStackTrace();
 					System.out.println("Database connection problem");
@@ -176,22 +208,21 @@ public class ContactServlet extends HttpServlet {
 			ps = con.prepareStatement("delete from Contacts where id = ? and user_id = ?");
 			ps.setString(1, String.valueOf(contact_id));
 			ps.setString(2, String.valueOf(user_id));
-			
+
 			int r = ps.executeUpdate();
 			System.out.println("result from delete " + r);
 			if (r > 0) {
 				response.setStatus(HttpServletResponse.SC_OK);
-		
+
 			} else {
 				System.out.println("Contact not deleted");
 				throw new ServletException("Contact not deleted.");
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 	}
 
