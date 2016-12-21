@@ -29,11 +29,11 @@
 	</context-param>
 	<context-param>
 		<param-name>dbPassword</param-name>
-		<param-value>XXX</param-value>
+		<param-value>XXXXX</param-value>
 	</context-param>
 	<context-param>
 		<param-name>dbURL</param-name>
-		<param-value>jdbc:mysql://XXX:3306/XXX</param-value>
+		<param-value>jdbc:mysql://83.212.105.20:3306/XXX</param-value>
 	</context-param>
 
 

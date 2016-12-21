@@ -90,6 +90,7 @@ public class ContactServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 
 		String contact_id = request.getParameter("id");
 		String name = request.getParameter("name");
@@ -156,7 +157,7 @@ public class ContactServlet extends HttpServlet {
 						ps.setString(4, String.valueOf(birthdate));
 						ps.setString(5, String.valueOf(user_id));
 					}
-
+					
 					int r = ps.executeUpdate();
 					System.out.println("update result = " + r);
 
