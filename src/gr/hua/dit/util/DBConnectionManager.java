@@ -9,7 +9,7 @@ public class DBConnectionManager {
 
 	public DBConnectionManager(String dbURL, String user, String pwd) throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver");
-		this.connection = DriverManager.getConnection(dbURL, user, pwd);
+		this.connection = DriverManager.getConnection(dbURL+"?useUnicode=true&characterEncoding=utf-8", user, pwd);
 	}
 
 	public Connection getConnection() {
